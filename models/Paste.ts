@@ -1,6 +1,7 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
+import mongoose, { Schema, Model } from 'mongoose';
 
-export interface IPaste extends Document {
+// FIX: Removed 'extends Document' to prevent the _id conflict
+export interface IPaste {
   _id: string; 
   content: string;
   views: number;
@@ -10,14 +11,15 @@ export interface IPaste extends Document {
 }
 
 const PasteSchema: Schema = new Schema({
-  _id: { type: String, required: true }, 
+  _id: { type: String, required: true }, // We manually set the string ID
   content: { type: String, required: true },
   views: { type: Number, default: 0 },
   max_views: { type: Number }, 
   expires_at: { type: Date },  
   created_at: { type: Date, default: Date.now },
-});
+}, { _id: false }); // Tells Mongoose not to auto-generate an ObjectId
 
+// Prevent model recompilation error in Next.js hot reload
 const Paste: Model<IPaste> = mongoose.models.Paste || mongoose.model<IPaste>('Paste', PasteSchema);
 
 export default Paste;
