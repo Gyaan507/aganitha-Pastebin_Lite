@@ -4,7 +4,8 @@ import Paste from '@/models/Paste';
 import { getCurrentTime } from '@/lib/time';
 import { headers } from 'next/headers'; 
 import { NextRequest } from 'next/server';
-
+import PasteViewer from '@/components/PasteViewer';
+// Helper to mock a NextRequest
 async function createMockRequest() {
   const headersList = await headers(); 
   return new NextRequest('http://localhost', { headers: headersList });
@@ -43,7 +44,7 @@ async function getPaste(id: string) {
 }
 
 export default async function ViewPaste(props: { params: Promise<{ id: string }> }) {
-  const params = await props.params; 
+  const params = await props.params;
   const paste = await getPaste(params.id);
 
   if (!paste) {
@@ -51,24 +52,11 @@ export default async function ViewPaste(props: { params: Promise<{ id: string }>
   }
 
   return (
-    <main className="min-h-screen p-8 max-w-2xl mx-auto font-sans">
-      <div className="mb-4">
-        <a href="/" className="text-blue-600 hover:underline">&larr; Create New</a>
-      </div>
-      
-      <div className="border rounded-lg shadow-sm bg-white p-6 text-black">
-        <h1 className="text-xl font-bold mb-4 pb-2 border-b">Paste Content</h1>
-        <pre className="whitespace-pre-wrap font-mono text-sm bg-gray-50 p-4 rounded">
-          {paste.content}
-        </pre>
-        
-        <div className="mt-4 text-xs text-gray-400 flex gap-4">
-          <span>Created: {new Date(paste.created_at).toLocaleString()}</span>
-          {paste.max_views && (
-            <span>Remaining Views: {Math.max(0, paste.max_views - paste.views)}</span>
-          )}
-        </div>
-      </div>
-    </main>
+    <PasteViewer 
+      content={paste.content} 
+      date={paste.created_at.toString()}
+      views={paste.views}
+      maxViews={paste.max_views}
+    />
   );
 }

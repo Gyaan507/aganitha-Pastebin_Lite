@@ -130,7 +130,7 @@ export default function Home() {
           {/* Success Section */}
           {generatedUrl && (
             <div className="mt-8 p-4 bg-green-900/30 border border-green-500/50 rounded-lg animate-in fade-in slide-in-from-top-4 duration-500">
-              <p className="font-semibold text-green-400 mb-2">🎉 Paste Created Successfully!</p>
+              <p className="font-semibold text-green-400 mb-2"> Paste Created Successfully!</p>
               <div className="flex flex-col sm:flex-row gap-2">
                 <input
                   readOnly
