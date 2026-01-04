@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 
 export default function PasteViewer({ content, date, views, maxViews }: any) {
   const [copied, setCopied] = useState(false);
-  const [formattedDate, setFormattedDate] = useState(''); // 1. Start empty
+  const [formattedDate, setFormattedDate] = useState('');
 
-  // 2. Calculate date ONLY after the component mounts in the browser
+  // Fix hydration mismatch by rendering date only on client
   useEffect(() => {
     setFormattedDate(new Date(date).toLocaleString());
   }, [date]);
@@ -18,8 +18,9 @@ export default function PasteViewer({ content, date, views, maxViews }: any) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 to-gray-800 text-white font-sans p-4 md:p-8">
-      <div className="max-w-3xl mx-auto w-full">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 to-gray-800 text-white font-sans">
+      
+      <div className="flex-1 p-4 md:p-8 max-w-3xl mx-auto w-full flex flex-col">
         
         {/* Header / Navigation */}
         <div className="flex justify-between items-center mb-6">
@@ -36,14 +37,13 @@ export default function PasteViewer({ content, date, views, maxViews }: any) {
         </div>
 
         {/* Main Card */}
-        <div className="bg-gray-800 border border-gray-700 rounded-xl shadow-2xl overflow-hidden">
+        <div className="bg-gray-800 border border-gray-700 rounded-xl shadow-2xl overflow-hidden mb-8">
           
           {/* Toolbar */}
           <div className="bg-gray-900/50 border-b border-gray-700 p-4 flex flex-wrap justify-between items-center gap-4">
             <div className="flex items-center space-x-4 text-sm text-gray-400">
               <span className="flex items-center">
-                {/* 3. Render the state variable, or a generic placeholder while loading */}
-                📅 {formattedDate || '...'} 
+                📅 {formattedDate || 'Loading...'} 
               </span>
               {maxViews && (
                 <span className="flex items-center text-orange-400 bg-orange-400/10 px-2 py-0.5 rounded">
@@ -72,14 +72,18 @@ export default function PasteViewer({ content, date, views, maxViews }: any) {
           </div>
         </div>
 
-        {/* Footer */}
-        <footer className="mt-12 text-center text-gray-600 text-sm">
-          <p>
-            Securely stored. 
-            {maxViews ? ' Will self-destruct after limit.' : ' Permanently available.'}
-          </p>
-        </footer>
       </div>
+
+      {/* Footer */}
+      <footer className="w-full py-6 text-center text-gray-500 text-sm border-t border-gray-800 bg-gray-900/50 mt-auto">
+        <p className="mb-2 text-gray-600 text-xs">
+          {maxViews ? '⚠️ This paste will self-destruct after the view limit.' : '🔒 Securely stored in database.'}
+        </p>
+        <p>
+          Made with <span className="text-red-500 animate-pulse">❤️</span> by{' '}
+          <span className="text-gray-300 font-medium">Gyaneshwar Kumar</span>
+        </p>
+      </footer>
     </div>
   );
 }
