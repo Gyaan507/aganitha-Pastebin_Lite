@@ -5,10 +5,8 @@ import { getCurrentTime } from '@/lib/time';
 
 export async function GET(
   req: NextRequest,
-  // Fix 1: Update type definition to handle Promise
   props: { params: Promise<{ id: string }> }
 ) {
-  // Fix 2: Await the params before using them
   const params = await props.params;
   const { id } = params;
 
