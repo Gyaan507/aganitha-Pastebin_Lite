@@ -2,6 +2,8 @@
 
 A robust, serverless pastebin application built with **Next.js 15** and **MongoDB**. This application allows users to create text pastes that automatically expire based on time (TTL) or view counts.
 
+**🔗 Live Demo:** [https://aganitha-pastebin-lite-seven.vercel.app/](https://aganitha-pastebin-lite-seven.vercel.app/)
+
 ## 🌟 Features
 
 * **Create Pastes:** Store arbitrary text content securely.
